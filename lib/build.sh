@@ -46,7 +46,7 @@ get_modules_source() {
 
 get_modules_cached() {
   local cache_dir=$1
-  if test -d $cache_dir/node/{bower_components,node_modules}; then
+  if test -d $cache_dir/node/bower_components || test -d $cache_dir/node_modules; then
     echo "true"
   else
     echo "false"
@@ -178,7 +178,7 @@ function build_dependencies() {
 
     if [ "$cache_status" == "valid" ]; then
       info "Restoring node modules from cache"
-      cp -r $cache_dir/node/{bower_components,node_modules} $build_dir/app/frontend
+      cp -r $cache_dir/node/{bower_components,node_modules} $build_dir
       info "Pruning unused dependencies"
       npm prune 2>&1 | indent
       info "Installing any new modules"
@@ -238,8 +238,12 @@ create_cache() {
   echo `node --version` > $cache_dir/node/node-version
   echo `npm --version` > $cache_dir/node/npm-version
 
-  if test -d $build_dir/app/frontend/{bower_components,node_modules}; then
-    cp -r $build_dir/app/frontend/{bower_components,node_modules} $cache_dir/node
+  if test -d $build_dir/bower_components; then
+    cp -r $build_dir/bower_components $cache_dir/node
+  fi
+
+  if test -d $build_dir/node_modules; then
+    cp -r $build_dir/node_modules $cache_dir/node
   fi
 }
 
