@@ -234,6 +234,7 @@ clean_npm() {
 create_cache() {
   info "Caching results for future builds"
   mkdir -p $cache_dir/node
+  npm config set cache "$cache_dir/node" --global
 
   echo `node --version` > $cache_dir/node/node-version
   echo `npm --version` > $cache_dir/node/npm-version
