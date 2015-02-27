@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-build_dir=$1/app/frontend
+build_dir=$1/frontend
 
 if [ -f $build_dir/package.json ]; then
   echo "Node.js" && exit 0
